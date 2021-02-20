@@ -1,9 +1,8 @@
 package guru.springframework.spring5webapp.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Publisher {
@@ -12,16 +11,44 @@ public class Publisher {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+
+
     private String name;
     private String addressline;
     private String city;
+    private String state;
     private String zip;
 
-    public Publisher(String name, String addressline, String city, String zip) {
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "publisher_id")
+    private Set<Book> books = new HashSet<>();
+
+    public Publisher(String name, String addressline, String city, String state, String zip) {
         this.name = name;
         this.addressline = addressline;
         this.city = city;
+        this.state = state;
         this.zip = zip;
+    }
+
+    @Override
+    public String toString() {
+        return "Publisher{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", addressline='" + addressline + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zip='" + zip + '\'' +
+                '}';
     }
 
     public Publisher() {
@@ -58,24 +85,19 @@ public class Publisher {
     public void setCity(String city) {
         this.city = city;
     }
+    public String getState() {
+        return state;
+    }
 
+    public void setState(String state) {
+        this.state = state;
+    }
     public String getZip() {
         return zip;
     }
 
     public void setZip(String zip) {
         this.zip = zip;
-    }
-
-    @Override
-    public String toString() {
-        return "Publisher{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", addressline='" + addressline + '\'' +
-                ", city='" + city + '\'' +
-                ", zip='" + zip + '\'' +
-                '}';
     }
 
     @Override
